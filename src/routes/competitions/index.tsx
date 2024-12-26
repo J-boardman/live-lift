@@ -1,13 +1,14 @@
+import { CompetitionTable } from "@/components/CompetitionTable";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/competitions/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   return (
     <div>
-      <h1>Home</h1>
+      <CompetitionTable />
     </div>
   );
 }

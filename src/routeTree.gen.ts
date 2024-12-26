@@ -11,20 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as CompetitionsIndexImport } from './routes/competitions/index'
+import { Route as CompetitionsIdImport } from './routes/competitions/$id'
 
 // Create/Update Routes
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CompetitionsIndexRoute = CompetitionsIndexImport.update({
+  id: '/competitions/',
+  path: '/competitions/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CompetitionsIdRoute = CompetitionsIdImport.update({
+  id: '/competitions/$id',
+  path: '/competitions/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +46,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/competitions/$id': {
+      id: '/competitions/$id'
+      path: '/competitions/$id'
+      fullPath: '/competitions/$id'
+      preLoaderRoute: typeof CompetitionsIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/competitions/': {
+      id: '/competitions/'
+      path: '/competitions'
+      fullPath: '/competitions'
+      preLoaderRoute: typeof CompetitionsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +67,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/competitions/$id': typeof CompetitionsIdRoute
+  '/competitions': typeof CompetitionsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/competitions/$id': typeof CompetitionsIdRoute
+  '/competitions': typeof CompetitionsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/competitions/$id': typeof CompetitionsIdRoute
+  '/competitions/': typeof CompetitionsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/competitions/$id' | '/competitions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/competitions/$id' | '/competitions'
+  id: '__root__' | '/' | '/competitions/$id' | '/competitions/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  CompetitionsIdRoute: typeof CompetitionsIdRoute
+  CompetitionsIndexRoute: typeof CompetitionsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  CompetitionsIdRoute: CompetitionsIdRoute,
+  CompetitionsIndexRoute: CompetitionsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +116,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/competitions/$id",
+        "/competitions/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/competitions/$id": {
+      "filePath": "competitions/$id.tsx"
+    },
+    "/competitions/": {
+      "filePath": "competitions/index.tsx"
     }
   }
 }
